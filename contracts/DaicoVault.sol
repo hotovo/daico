@@ -3,6 +3,7 @@ pragma solidity ^0.4.18;
 
 import "./SafeMathLib.sol";
 import "./FractionalERC20.sol";
+import "./ITokenEventListener.sol";
 
 contract DaicoVault is ITokenEventListener {
   using SafeMathLib for uint;
@@ -146,12 +147,12 @@ contract DaicoVault is ITokenEventListener {
   }
 
   function onTokenTransfer(address _from, address _to, uint256 _value) public {
-    require (msg.sender() == token);
+    require (msg.sender == token);
     if (numProposals == 0) {
       return;
     }
     Proposal currentProposal = proposals[numProposals - 1];
-    if ((currentProposal.executed) || (token.balanceOf(_from) > p.voted[_from])) {
+    if ((currentProposal.executed) || (token.balanceOf(_from) > currentProposal.voted[_from])) {
         return;
     }
     currentProposal.voted[_from] = token.balanceOf(_from);

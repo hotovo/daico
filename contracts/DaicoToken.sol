@@ -9,7 +9,7 @@ pragma solidity ^0.4.18;
 import "./UpgradeableToken.sol";
 import "./ReleasableToken.sol";
 import "./MintableToken.sol";
-import "./ITokenEventListener.sol"
+import "./ITokenEventListener.sol";
 
 
 /**
@@ -23,7 +23,7 @@ import "./ITokenEventListener.sol"
  * - The token can be capped (supply set in the constructor) or uncapped (crowdsale contract can mint new tokens)
  *
  */
-contract CrowdsaleToken is ReleasableToken, MintableToken, UpgradeableToken {
+contract DaicoToken is ReleasableToken, MintableToken, UpgradeableToken {
 
   // Event listener user to notify the DAICO about token transfer.
   ITokenEventListener public eventListener;
@@ -48,7 +48,7 @@ contract CrowdsaleToken is ReleasableToken, MintableToken, UpgradeableToken {
    * @param _decimals Number of decimal places
    * @param _mintable Are new tokens created over the crowdsale or do we distribute only the initial supply? Note that when the token becomes transferable the minting always ends.
    */
-  function CrowdsaleToken(string _name, string _symbol, uint _initialSupply, uint _decimals, bool _mintable)
+  function DaicoToken(string _name, string _symbol, uint _initialSupply, uint _decimals, bool _mintable)
   UpgradeableToken(msg.sender) {
 
     // Create any address, can be transferred
