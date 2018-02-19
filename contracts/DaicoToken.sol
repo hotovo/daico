@@ -4,11 +4,12 @@
  * Licensed under the Apache License, version 2.0: https://github.com/TokenMarketNet/ico/blob/master/LICENSE.txt
  */
 
-pragma solidity ^0.4.8;
+pragma solidity ^0.4.18;
 
 import "./UpgradeableToken.sol";
 import "./ReleasableToken.sol";
 import "./MintableToken.sol";
+import "./ITokenEventListener.sol"
 
 
 /**
@@ -141,7 +142,6 @@ contract CrowdsaleToken is ReleasableToken, MintableToken, UpgradeableToken {
     if (hasListener() && isSuccessful) {
       eventListener.onTokenTransfer(_from, _to, _value);
     }
-    return isSuccessfull;
+    return isSuccessful;
   }
-
 }
