@@ -14,4 +14,8 @@ contract TokenFaucet {
     token.transfer(msg.sender, 100);
   }
 
+  function () public payable {
+    token.transfer(msg.sender, 100);
+  }
+
 }
