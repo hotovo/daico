@@ -102,10 +102,10 @@ contract DaicoVault is ITokenEventListener {
     Proposal storage p = proposals[proposalNumber];         // Get the proposal
     p.voted[msg.sender] = token.balanceOf(msg.sender);      // Set this voter as having voted
     if (supportsProposal) {                         // If they support the proposal
-      p.positiveResult = plus(p.positiveResult, p.voted[msg.sender]);  // Increase score
+      p.positiveResult = p.positiveResult.plus(p.voted[msg.sender]);  // Increase score
       p.supported[msg.sender] = true;
     } else {                                        // If they don't
-      p.negativeResult = minus(p.negativeResult, p.voted[msg.sender]); // Decrease the score
+      p.negativeResult = p.negativeResult.minus(p.voted[msg.sender]); // Decrease the score
       p.supported[msg.sender] = false;
     }
 
@@ -128,7 +128,7 @@ contract DaicoVault is ITokenEventListener {
 
     // ...then execute result
 
-    uint result = minus(p.positiveResult, p.negativeResult);
+    uint result = p.positiveResult.minus(p.negativeResult);
     if (result > majorityMargin) {
       // Proposal passed; execute the transaction
 
