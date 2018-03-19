@@ -33,8 +33,6 @@ contract DaicoVault is ITokenEventListener {
     uint votingDeadline;
     bool executed;
     bool proposalPassed;
-    uint numberOfVotes;
-    uint currentResult;
     uint positiveResult;
     uint negativeResult;
     mapping (address => bool) supported;
@@ -47,6 +45,7 @@ contract DaicoVault is ITokenEventListener {
     _;
   }
 
+  // Modifier ensures there are no ongoing proposals
   modifier noOngoingProposals {
     require ((numProposals == 0) || (proposals[numProposals - 1].executed));
     _;
@@ -97,20 +96,19 @@ contract DaicoVault is ITokenEventListener {
     * @param supportsProposal either in favor or against it
     * @param justificationText optional justification text
     */
+
   function vote(uint proposalNumber, bool supportsProposal, string justificationText)
   onlyMembers public {
     require (p.voted[msg.sender] == 0);
-    Proposal storage p = proposals[proposalNumber];         // Get the proposal
-    p.voted[msg.sender] = token.balanceOf(msg.sender);      // Set this voter as having voted
-    if (supportsProposal) {                         // If they support the proposal
-      p.positiveResult = p.positiveResult.plus(p.voted[msg.sender]);  // Increase score
+    Proposal storage p = proposals[proposalNumber];
+    p.voted[msg.sender] = token.balanceOf(msg.sender);
+    if (supportsProposal) {
+      p.positiveResult = p.positiveResult.plus(p.voted[msg.sender]);
       p.supported[msg.sender] = true;
-    } else {                                        // If they don't
-      p.negativeResult = p.negativeResult.minus(p.voted[msg.sender]); // Decrease the score
+    } else {
+      p.negativeResult = p.negativeResult.minus(p.voted[msg.sender]);
       p.supported[msg.sender] = false;
     }
-
-    // Create a log of this event
     Voted(proposalNumber, supportsProposal, msg.sender, justificationText);
   }
 
